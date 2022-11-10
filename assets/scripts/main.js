@@ -85,7 +85,7 @@ async function getRecipes() {
           const fetch = await fetch(RECIPE_URLS[i]); //A6
           const response = await fetch.json(); //A7
           recipe.push(response); //A8
-          if (recipe.length == RECIPE_URLS.length) saveRecipesToStorage(); //A9
+          if (recipe.length == RECIPE_URLS.length) saveRecipesToStorage();  //A9
           Promise.resolve(recipe);
         } catch (error) {
           console.error(error); //A10

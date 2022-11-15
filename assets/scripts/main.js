@@ -20,7 +20,7 @@ async function init() {
   // Get the recipes from localStorage
   let recipes;
   try {
-    recipes = await getRecipes();
+    recipes = getRecipes();
   } catch (err) {
     console.error(err);
   }
@@ -73,23 +73,25 @@ async function getRecipes() {
   // The rest of this method will be concerned with requesting the recipes
   // from the network
   // A2. TODO - Create an empty array to hold the recipes that you will fetch
-  const recipe = [];
+  const array = [];
   // A3. TODO - Return a new Promise. If you are unfamiliar with promises, MDN
   //            has a great article on them. A promise takes one parameter - A
   //            function (we call these callback functions). That function will
   //            take two parameters - resolve, and reject. These are functions
   //            you can call to either resolve the Promise or Reject it.
-  return new Promise(async callback => { //A3
-      for (let i = 0; i < RECIPE_URLS.length; i++) { //A4
+  return new Promise(async (resolve, reject) => { //A3
+      for (const url of RECIPE_URLS) { //A4
         try { //A5
-          const fet = await fetch(RECIPE_URLS[i]); //A6
-          const response = await fet.json(); //A7
-          recipe.push(response); //A8
-          if (recipe.length == RECIPE_URLS.length) saveRecipesToStorage();  //A9
-          Promise.resolve(recipe);
+          const json = await fetch(url)
+            .then(response => response.json());
+          array.push(json); //A8
+          if (array.length == RECIPE_URLS.length) { //A9
+            saveRecipesToStorage(array);
+            resolve(array);
+          }
         } catch (error) {
           console.error(error); //A10
-          Promise.reject(error); //A11
+          reject(error); //A11
         }
       }
   });

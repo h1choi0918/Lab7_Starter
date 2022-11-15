@@ -96,8 +96,8 @@ async function getRecipes() {
   return new Promise(async (resolve, reject) => { //A3
       for (const url of RECIPE_URLS) { //A4
         try { //A5
-          const json = await fetch(url)
-            .then(response => response.json());
+          const response = await fetch(url);
+          const json = await response.json();
           array.push(json); //A8
           if (array.length == RECIPE_URLS.length) { //A9
             saveRecipesToStorage(array);
